@@ -1,0 +1,402 @@
+/* =====================================================
+   北川原温 時空間マップ — style.css
+   Dark architectural aesthetic
+   ===================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-deep:       #0a0c10;
+  --bg-panel:      rgba(12, 15, 20, 0.88);
+  --bg-glass:      rgba(18, 22, 30, 0.75);
+  --accent:        #c8a96e;       /* ゴールド */
+  --accent-cold:   #4a9eff;       /* 古い作品 = 青 */
+  --accent-warm:   #ff6b35;       /* 新しい作品 = 橙 */
+  --text-primary:  #e8e6e0;
+  --text-muted:    #7a7870;
+  --border:        rgba(200, 169, 110, 0.18);
+  --shadow:        0 8px 32px rgba(0,0,0,0.6);
+  --radius:        10px;
+  --font-en:       'Outfit', sans-serif;
+  --font-jp:       'Noto Sans JP', sans-serif;
+  --header-h:      64px;
+  --timeline-h:    110px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-jp);
+}
+
+/* ===== HEADER ===== */
+#map-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+#title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#title-jp {
+  font-family: var(--font-jp);
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.12em;
+}
+
+#title-en {
+  font-family: var(--font-en);
+  font-size: 0.65rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+#header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#stats-bar {
+  font-family: var(--font-en);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+}
+
+#stat-showing {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* ===== MODE BUTTONS ===== */
+.mode-btn {
+  font-family: var(--font-en);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mode-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(200,169,110,0.07);
+}
+
+.mode-btn.active {
+  color: var(--bg-deep);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ===== MAP ===== */
+#map {
+  position: fixed;
+  top: var(--header-h);
+  left: 0; right: 0;
+  bottom: var(--timeline-h);
+  z-index: 1;
+}
+
+/* Leaflet ポップアップを非表示（カスタムポップアップを使用） */
+.leaflet-popup { display: none !important; }
+
+/* ===== CUSTOM MARKER ===== */
+.proj-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.proj-dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.proj-dot:hover {
+  transform: scale(1.8);
+  z-index: 9999;
+}
+
+.proj-dot:hover::after {
+  transform: scale(1.4);
+  opacity: 0.6;
+}
+
+.proj-dot.highlighted {
+  transform: scale(2.2);
+  border-color: #fff;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+/* ===== TIMELINE PANEL ===== */
+#timeline-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--timeline-h);
+  z-index: 1000;
+  background: var(--bg-panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+#timeline-inner {
+  width: 100%;
+  padding: 0 40px;
+}
+
+#year-display {
+  font-family: var(--font-en);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#year-sep {
+  margin: 0 10px;
+  opacity: 0.4;
+}
+
+/* ===== noUiSlider カスタムスタイル ===== */
+#year-slider {
+  height: 4px;
+  margin-bottom: 10px;
+}
+
+.noUi-target {
+  background: rgba(200,169,110,0.15);
+  border: none;
+  box-shadow: none;
+  border-radius: 2px;
+}
+
+.noUi-connect {
+  background: linear-gradient(90deg, var(--accent-cold), var(--accent));
+  border-radius: 2px;
+}
+
+.noUi-handle {
+  width: 18px !important;
+  height: 18px !important;
+  right: -9px !important;
+  top: -7px !important;
+  border-radius: 50% !important;
+  background: var(--accent) !important;
+  border: 2px solid #fff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+  cursor: grab;
+}
+
+.noUi-handle:active {
+  cursor: grabbing;
+}
+
+.noUi-handle::before,
+.noUi-handle::after {
+  display: none !important;
+}
+
+/* ===== TIMELINE TICKS ===== */
+#timeline-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0;
+}
+
+.tick-label {
+  font-family: var(--font-en);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+/* ===== CUSTOM POPUP CARD ===== */
+#popup-card {
+  position: fixed;
+  top: calc(var(--header-h) + 16px);
+  right: 20px;
+  width: 280px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  z-index: 2000;
+  box-shadow: var(--shadow);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#popup-card.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+}
+
+#popup-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+#popup-close:hover {
+  color: var(--text-primary);
+}
+
+#popup-year-badge {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--bg-deep);
+  background: var(--accent);
+  border-radius: 3px;
+  padding: 2px 8px;
+  margin-bottom: 10px;
+}
+
+#popup-name {
+  font-family: var(--font-jp);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+#popup-location {
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+#popup-notes {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ===== LOADING ===== */
+#loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease;
+}
+
+#loading-overlay.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+#loading-ring {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+#loading-inner p {
+  font-family: var(--font-en);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== TRAJECTORY LINE ===== */
+.trajectory-line {
+  stroke-dasharray: 8 4;
+  animation: dash-flow 2s linear infinite;
+}
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -48; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  :root {
+    --header-h: 56px;
+    --timeline-h: 90px;
+  }
+
+  #title-en { display: none; }
+  #popup-card { width: calc(100vw - 32px); right: 16px; }
+  #timeline-inner { padding: 0 20px; }
+}

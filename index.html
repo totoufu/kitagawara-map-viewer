@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>北川原温 建築時空間マップ | Atsushi Kitagawara Archive</title>
+  <meta name="description" content="北川原温の建築プロジェクト65件を日本地図とタイムラインで時空間的に可視化するアーカイブビューア。" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- noUiSlider -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ヘッダーUI -->
+  <header id="map-header">
+    <div id="header-left">
+      <div id="title-block">
+        <span id="title-jp">北川原温 建築軌跡</span>
+        <span id="title-en">Kitagawara Archive — Spatio-Temporal Map</span>
+      </div>
+    </div>
+    <div id="header-right">
+      <div id="stats-bar">
+        <span id="stat-showing">–</span>
+        <span id="stat-label">件表示中</span>
+      </div>
+      <button id="btn-all" class="mode-btn active" title="全プロジェクト表示">ALL</button>
+      <button id="btn-range" class="mode-btn" title="期間絞り込みモード">RANGE</button>
+      <button id="btn-trajectory" class="mode-btn" title="軌跡アニメーション">TRACE</button>
+    </div>
+  </header>
+
+  <!-- 地図 -->
+  <div id="map"></div>
+
+  <!-- タイムラインパネル -->
+  <div id="timeline-panel">
+    <div id="timeline-inner">
+      <div id="year-display">
+        <span id="year-from">1979</span>
+        <span id="year-sep">—</span>
+        <span id="year-to">2022</span>
+      </div>
+      <div id="slider-wrap">
+        <div id="year-slider"></div>
+      </div>
+      <div id="timeline-ticks"></div>
+    </div>
+  </div>
+
+  <!-- ポップアップ -->
+  <div id="popup-card" class="hidden">
+    <button id="popup-close">✕</button>
+    <div id="popup-year-badge"></div>
+    <h2 id="popup-name"></h2>
+    <p id="popup-location"></p>
+    <p id="popup-notes"></p>
+  </div>
+
+  <!-- ローディング -->
+  <div id="loading-overlay">
+    <div id="loading-inner">
+      <div id="loading-ring"></div>
+      <p>Loading Archive…</p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
