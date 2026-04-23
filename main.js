@@ -164,7 +164,7 @@ function drawTrajectoryStatic() {
   for (let i = 0; i < visible.length - 1; i++) {
     const a = visible[i], b = visible[i + 1];
     const line = L.polyline(
-      [curveMidpoints([a.lat, a.lng], [b.lat, b.lng])],
+      curveMidpoints([a.lat, a.lng], [b.lat, b.lng]),
       {
         color: lerpColor('#4a9eff', '#ff6b35',
           (a.year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)),
@@ -225,12 +225,13 @@ function curveMidpoints(a, b) {
   const ctrlLng = midLng + dy * 0.18;
   // 20点で近似
   const pts = [];
-  for (let t = 0; t <= 1; t += 0.05) {
+  for (let t = 0; t < 1; t += 0.05) {
     const mt = 1 - t;
     const lat = mt * mt * a[0] + 2 * mt * t * ctrlLat + t * t * b[0];
     const lng = mt * mt * a[1] + 2 * mt * t * ctrlLng + t * t * b[1];
     pts.push([lat, lng]);
   }
+  pts.push([b[0], b[1]]); // 確実に終点(t=1)を追加
   return pts;
 }
 
